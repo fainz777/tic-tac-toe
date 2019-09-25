@@ -2,8 +2,9 @@ class TicTacToe {
     constructor() {
         this.isX = true;
         this.currentPlayerSymbol = 'x';
+        this.winner = null;
         this.board = [[null, null, null], [null, null, null], [null, null, null]]
-        //this.board = Array(3).fill(Array(3).fill(null));
+        //this.board = new Array(3).fill(new Array(3).fill(null));
     }
 
     getCurrentPlayerSymbol() {
@@ -16,16 +17,18 @@ class TicTacToe {
         if (!value) {
             this.board[rowIndex][columnIndex] = this.currentPlayerSymbol;
             this.currentPlayerSymbol = this.isX ? 'o' : 'x';
-            !this.isX;
+            this.isX = !this.isX;
         }
     }
 
     isFinished() {
-
+        return this.isWinner() || this.isDraw();
     }
 
     getWinner() {
+        this.isWinner();
 
+        return this.winner;
     }
 
     noMoreTurns() {
@@ -33,14 +36,14 @@ class TicTacToe {
     }
 
     isDraw() {
-
+        return this.noMoreTurns() && !this.isWinner();
     }
 
     getFieldValue(rowIndex, colIndex) {
         return this.board[rowIndex][colIndex];
     }
 
-    hasWinner() {
+    isWinner() {
         const winPositions = [
             [[0, 0], [0, 1], [0, 2]],
             [[1, 0], [1, 1], [1, 2]],
@@ -49,12 +52,20 @@ class TicTacToe {
             [[0, 1], [1, 1], [2, 1]],
             [[0, 2], [1, 2], [2, 2]],
             [[0, 0], [1, 1], [2, 2]],
-            [[0, 2], [1, 1], [2, 0]];
+            [[0, 2], [1, 1], [2, 0]]
         ];
 
-        winPositions.forEach(position => {
-            
-        });
+
+        for (let i = 0; i < winPositions.length; i++) {
+            const [a, b, c] = winPositions[i];
+
+            if (this.board[a[0]][a[1]] && this.board[a[0]][a[1]] === this.board[b[0]][b[1]] && this.board[a[0]][a[1]]  === this.board[c[0]][c[1]]) {
+                this.winner = this.board[a[0]][a[1]];
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 
